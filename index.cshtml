@@ -1,0 +1,404 @@
+﻿@{
+
+    //========================================
+    //persisting values on index.cshtml
+    string[] persistingValues = new string[9];
+  
+
+    //========================================
+    string message = "", messageSport = "", messageCult = "";
+
+    //bool passOk = false;//passwords match?
+
+    //assign inputs to variables
+
+    string fname = "", sname = "", ppsn = "", dobStr = "", gender = "", height = "", email = "", phone = "";
+    string sportStr = "", cultStr = "", relStatus = "", pass = "", passCheck = "";
+    string[] cultural = { }, sports = { };
+    //========================PERSONAL INFO FIELDSET=====================================
+
+    /*       if (field != null) { string = field }       */
+
+
+    if (Request.Form["fname"] != null)
+    {
+        fname = Request.Form["fname"];
+    }
+
+    if (Request.Form["sname"] != null)
+    {
+        sname = Request.Form["sname"];
+    }
+
+    if (Request.Form["ppsn"] != null)
+    {
+        ppsn = Request.Form["ppsn"];
+    }
+
+    if (Request.Form["dob"] != null)
+    {
+        dobStr = Request.Form["dob"];
+        //string[] dob = dobStr.Split(',');// day/month/year  NOT NEEDED
+    }
+
+    if (Request.Form["gender"] != null)
+    {
+        gender = Request.Form["gender"];
+    }
+
+    if (Request.Form["height"] != null)
+    {
+        height = Request.Form["height"];
+    }
+
+    if (Request.Form["email"] != null)
+    {
+        email = Request.Form["email"];
+    }
+
+    if (Request.Form["pass"] != null)
+    {
+        pass = Request.Form["pass"];
+
+    }
+    if (Request.Form["passCheck"] != null)
+    {
+        passCheck = Request.Form["pass"];
+
+    }
+
+
+
+    if (Request.Form["phone"] != null)
+    {
+        phone = Request.Form["phone"];
+    }
+
+    //===================================================================================================
+
+    //================RELATIOINSHIP STATUS FIELDSET======================================================
+
+    if (Request.Form["relStatus"] != null)
+    {
+        relStatus = Request.Form["relStatus"];
+    }
+
+    //===================================================================================================
+
+    //====================SPORTS INTEREST FIELDSET=======================================================
+
+    if (Request.Form["sport"] != null)
+    {
+        sportStr = Request.Form["sport"];
+        sports = sportStr.Split(',');
+
+    }
+
+    //===================================================================================================
+
+    //====================CULTURAL INTERESTS FIELDSET====================================================
+
+    if (Request.Form["cultural"] != null)
+    {
+        cultStr = Request.Form["cultural"];
+        cultural = cultStr.Split(',');
+    }
+
+    //===================================================================================================
+    //==================TOUCH OF VALIDATION============================================================
+    Validation.Add("fname", Validator.Required("Please enter your name"));
+    Validation.Add("sname", Validator.Required("Please enter your name"));
+    Validation.Add("ppsn", Validator.Required("Please enter your PPS Number"));
+    Validation.Add("dob", Validator.DateTime("Please enter a valid date"));
+    Validation.Add("gender", Validator.Required("Please select your gender"));
+    Validation.Add("height", Validator.Range(135, 200, "Must be between 135 and 200"));
+    Validation.Add("email", Validator.Required("Please enter your email address"), Validator.Regex("[\\w .]+@\\w+.\\w+", "Please enter a valid email address"));
+    Validation.Add("pass", Validator.Required("Please enter a password"), Validator.Regex("\\w{8,}", "Password must be at least 8 characters long"));
+    Validation.Add("passCheck", Validator.Required("Please confirm your password"), Validator.EqualsTo("pass", "Passwords don't match"));
+    Validation.Add("phone", Validator.Regex("(\\(?\\d{3}-? ?\\)? ?\\d{7})|(\\d{5} ?\\d{2} ?-?\\d{7})|(00353\\d{9})", "Must be an Irish mobile number"));
+
+
+
+    //=================DECIDE WHAT TO DO NEXT==================================================================
+
+
+    if (IsPost)
+    {
+
+
+        if (Validation.IsValid())
+        {
+            var account = new AssignmentPart3.Person(fname, sname, ppsn, gender, dobStr, height, email, phone, relStatus, sports, cultural);
+            Session["account"] = account;
+            Response.Redirect("~/subpage1.cshtml");
+            persistingValues[0] = account.FirstName;
+            persistingValues[1] = account.LastName;
+            persistingValues[2] = account.PPSN;
+            persistingValues[3] = account.Gender;
+            persistingValues[4] = account.DOB;
+            persistingValues[5] = account.Height;
+            persistingValues[6] = account.Email;
+            persistingValues[7] = account.Phone;
+            persistingValues[8] = account.RelStatus;
+            sports = account.Sports;
+            cultural = account.Cultural;
+        }
+        else if (!Validation.IsValid())
+        {
+            persistingValues[0] = (Request.Form["fname"] != null) ? @Request.Form["fname"] : "";
+            persistingValues[1] = (Request.Form["sname"] != null) ? @Request.Form["sname"] : "";
+            persistingValues[2] = (Request.Form["ppsn"] != null) ? @Request.Form["ppsn"] : "";
+            persistingValues[3] = Request.Form["gender"];
+            persistingValues[4] = (Request.Form["dob"] != null) ? @Request.Form["dob"] : "";
+            persistingValues[5] = (Request.Form["height"] != null) ? @Request.Form["height"] : "";
+            persistingValues[6] = (Request.Form["email"] != null) ? @Request.Form["email"] : "";
+            persistingValues[7] = (Request.Form["phone"] != null) ? @Request.Form["phone"] : "";
+            persistingValues[8] = relStatus;
+        }
+
+    }
+    else
+    {
+        if (Session["account"] != null)
+        {
+            //IF USER COMES BACK FROM CONFIRMATION PAGE
+            var account = (AssignmentPart3.Person)Session["account"];
+            persistingValues[0] = account.FirstName;
+            persistingValues[1] = account.LastName;
+            persistingValues[2] = account.PPSN;
+            persistingValues[3] = account.Gender;
+            persistingValues[4] = account.DOB;
+            persistingValues[5] = account.Height;
+            persistingValues[6] = account.Email;
+            persistingValues[7] = account.Phone;
+            persistingValues[8] = account.RelStatus;
+            sports = account.Sports;
+            cultural = account.Cultural;
+        }
+    }
+
+
+
+}
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Box of Chocolates</title>
+    <link rel="stylesheet" type="text/css" href="StyleSheet1.css">
+    <link rel="shortcut icon" type="image/x-icon" href="https://cdn3.iconfinder.com/data/icons/i-drawn-kid/500/balloon-512.png" />
+</head>
+
+<body>
+
+    <header>
+        <h1>Box of Chocolates</h1>
+        <h3>You never know what you're gonna get</h3>
+    </header>
+
+    @Html.Raw(message)<!--output-->
+    <form method="post">
+        <div class="mainDiv">
+            <h2>Personal Information</h2>
+            <fieldset>
+
+                <p><span class="reqdAst">* = Required</span></p>
+                <label for="fname"><span class="reqdAst">*</span>First Name</label>@Html.ValidationMessage("fname")
+                <input type="text" name="fname" id="fname" placeholder="Jim" value=@persistingValues[0]>
+
+                <label for="sname"><span class="reqdAst">*</span>Second Name</label>@Html.ValidationMessage("sname")
+                <input type="text" name="sname" id="sname" placeholder="Magoo" value=@persistingValues[1]>
+
+                <label for="ppsn"><span class="reqdAst">*</span>PPSN</label>@Html.ValidationMessage("ppsn")
+                <input type="text" name="ppsn" id="ppsn" placeholder="123456" value=@persistingValues[2]>
+
+                <label for="gender"><span class="reqdAst">*</span>Gender</label>@Html.ValidationMessage("gender")
+                <div id="gender">
+                    <label for="genMale">
+                        <input type="radio" name="gender" id="genMale" value="male" @(persistingValues[3] == "male" ? "checked" : "" ) />
+                        Male
+                    </label>
+                    <label for="genFem">
+                        <input type="radio" name="gender" id="genFem" value="female" @(persistingValues[3] == "female" ? "checked" : "") />
+                        Female
+                    </label>
+                </div>
+
+                <label for="dob">Date of Birth</label>@Html.ValidationMessage("dob")
+                <input class="dobLabel" type="date" name="dob" id="dob" value=@persistingValues[4]>
+
+                <label for="height">Height (cm)</label>@Html.ValidationMessage("height")
+                <input type="text" name="height" id="height" placeholder="185" value=@persistingValues[5]>
+
+                <label for="email"><span class="reqdAst">*</span>Email</label>@Html.ValidationMessage("email")
+                <input type="text" name="email" id="email" placeholder="jim_magoo@mail.com" value=@persistingValues[6]>
+
+                <label for="password"><span class="reqdAst">*</span>Password</label>@Html.ValidationMessage("pass")
+                <input type="password" name="pass" id="password" placeholder="password" />
+
+                <label for="passwordConfirm"><span class="reqdAst">*</span>Confirm Password</label>@Html.ValidationMessage("passCheck")
+                <input type="password" name="passCheck" id="passwordConfirm" placeholder="password" />
+
+                <label for="phone">Phone</label>@Html.ValidationMessage("phone")
+                <input type="text" name="phone" id="phone" placeholder="087 1234567" value=@persistingValues[7]>
+
+            </fieldset>
+        </div>
+
+        <div class="mainDiv">
+            <h2>Relationship Status</h2>
+            <fieldset>
+                <!--RELATIONSHIP STATUS FIELDSET STARTS-->
+
+                <label for="neverMarried" class="radioSp">
+                    <input type="radio" name="relStatus" value="Never Married" id="neverMarried" @(persistingValues[8] == "Never Married" ? "checked" : "") />
+                    Never Married
+                </label>
+                <label for="widowed" class="radioSp">
+                    <input type="radio" name="relStatus" value="Widowed" id="widowed" @(persistingValues[8] == "Widowed" ? "checked" : "") />
+                    Widowed
+                </label>
+                <label for="divorced" class="radioSp">
+                    <input type="radio" name="relStatus" value="Divorced" id="divorced" @(persistingValues[8] == "Divorced" ? "checked" : "") />
+                    Divorced
+                </label>
+                <label for="seperated" class="radioSp">
+                    <input type="radio" name="relStatus" value="Seperated" id="seperated" @(persistingValues[8] == "Seperated" ? "checked" : "") />
+                    Seperated
+                </label>
+
+            </fieldset>
+        </div>
+
+
+        <!--SPORTS FIELDSET STARTS-->
+        <div class="mainDiv">
+            <h2>Sports</h2>
+            <fieldset>
+                <label for="hiking" class="radioSp">
+                    <input type="checkbox" value="hiking" id="hiking" name="sport" @(sports.Contains("hiking") ? "checked" : "") />
+                    Hiking
+                </label>
+                <label for="gym" class="radioSp">
+                    <input type="checkbox" value="gym" id="gym" name="sport" @(sports.Contains("gym") ? "checked" : "") />
+                    Gym Training
+                </label>
+                <label for="cycling" class="radioSp">
+                    <input type="checkbox" value="cycling" id="cycling" name="sport" @(sports.Contains("cycling") ? "checked" : "") />
+                    Cycling
+                </label>
+                <label for="dancing" class="radioSp">
+                    <input type="checkbox" value="dancing" id="dancing" name="sport" @(sports.Contains("dancing") ? "checked" : "") />
+                    Dancing
+                </label>
+                <label for="swimming" class="radioSp">
+                    <input type="checkbox" value="swimming" id="swimming" name="sport" @(sports.Contains("swimming") ? "checked" : "") />
+                    Swimming
+                </label>
+                <label for="running" class="radioSp">
+                    <input type="checkbox" value="running" id="running" name="sport" @(sports.Contains("running") ? "checked" : "") />
+                    Running
+                </label>
+                <label for="tennis" class="radioSp">
+                    <input type="checkbox" value="tennis" id="tennis" name="sport" @(sports.Contains("tennis") ? "checked" : "") />
+                    Tennis
+                </label>
+                <label for="rugby" class="radioSp">
+                    <input type="checkbox" value="rugby" id="rugby" name="sport" @(sports.Contains("rugby") ? "checked" : "") />
+                    Rugby
+                </label>
+                <label for="winter" class="radioSp">
+                    <input type="checkbox" value="winter" id="winter" name="sport" @(sports.Contains("winter") ? "checked" : "") />
+                    Winter Sports
+                </label>
+                <label for="badminton" class="radioSp">
+                    <input type="checkbox" value="badminton" id="badminton" name="sport" @(sports.Contains("badminton") ? "checked" : "") />
+                    Badminton
+                </label>
+                <label for="gaa" class="radioSp">
+                    <input type="checkbox" value="gaa" id="gaa" name="sport" @(sports.Contains("gaa") ? "checked" : "") />
+                    GAA
+                </label>
+                <label for="soccer" class="radioSp">
+                    <input type="checkbox" value="soccer" id="soccer" name="sport" @(sports.Contains("soccer") ? "checked" : "") />
+                    Soccer
+                </label>
+            </fieldset>
+        </div>
+
+
+        <div class="mainDiv">
+            <h2>Cultural Interests</h2>
+            <fieldset class="info">
+                <!--CULTURAL FIELDSET STARTS-->
+
+                <label for="food" class="radioSp">
+                    <input type="checkbox" id="food" value="food" name="cultural" @(cultural.Contains("food") ? "checked" : "") />
+                    Food
+                </label>
+
+                <label for="wine" class="radioSp">
+                    <input type="checkbox" id="wine" value="wine" name="cultural" @(cultural.Contains("wine") ? "checked" : "") />
+                    Fine Wine
+                </label>
+
+                <label for="pop" class="radioSp">
+                    <input type="checkbox" id="pop" value="pop" name="cultural" @(cultural.Contains("pop") ? "checked" : "") />
+                    Pop Music
+                </label>
+
+                <label for="rock" class="radioSp">
+                    <input type="checkbox" id="rock" value="rock" name="cultural" @(cultural.Contains("rock") ? "checked" : "") />
+                    Rock Music
+                </label>
+
+                <label for="classical" class="radioSp">
+                    <input type="checkbox" id="classical" value="classical" name="cultural" @(cultural.Contains("classical") ? "checked" : "") />
+                    Classical Music
+                </label>
+
+                <label for="theatre" class="radioSp">
+                    <input type="checkbox" id="theatre" value="theatre" name="cultural" @(cultural.Contains("theatre") ? "checked" : "") />
+                    Theatre
+                </label>
+
+                <label for="film" class="radioSp">
+                    <input type="checkbox" id="film" value="film" name="cultural" @(cultural.Contains("film") ? "checked" : "") />
+                    Film
+                </label>
+
+                <label for="lit" class="radioSp">
+                    <input type="checkbox" id="lit" value="lit" name="cultural" @(cultural.Contains("lit") ? "checked" : "") />
+                    Literature
+                </label>
+
+                <label for="gaming" class="radioSp">
+                    <input type="checkbox" id="gaming" value="gaming" name="cultural" @(cultural.Contains("gaming") ? "checked" : "") />
+                    Gaming
+                </label>
+
+                <label for="trad" class="radioSp">
+                    <input type="checkbox" id="trad" value="trad" name="cultural" @(cultural.Contains("trad") ? "checked" : "") />
+                    Traditional Music
+                </label>
+
+                <label for="dancingCulture" class="radioSp">
+                    <input type="checkbox" id="dancingCulture" value="dancing" name="cultural" @(cultural.Contains("dancing") ? "checked" : "") />
+                    Dancing
+                </label>
+
+            </fieldset>
+
+        </div>
+
+        <input type="submit" class="btn" />
+    </form>
+</body>
+</html>
+

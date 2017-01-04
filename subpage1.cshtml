@@ -1,0 +1,77 @@
+﻿@{
+    //=======================================================================
+    //=================OUTPUT================================================
+    //=======================================================================
+    string message = "";
+    
+    //========================================
+    if (Session["account"] != null)
+    {
+        var account = (AssignmentPart3.Person)Session["account"];
+        //fname = account.FirstName;
+
+        string messageSport = "", messageCult = "";
+        //personal information & relationship status
+        message = String.Format("<div class=\"interests\"><fieldset><h2>Hi, {0} {1}!</h2><br><h4>Please check that this information is correct:</h4><br><br>", account.FirstName, account.LastName);
+        message += String.Format("<p><br><span class=\"fieldColour\">PPSN:</span> {0}<br><span class=\"fieldColour\">Gender:</span> {1}<br><span class=\"fieldColour\">Date of Birth:</span> {2}", account.PPSN, account.Gender, account.DOB);
+        message += String.Format("<br><span class=\"fieldColour\">Height:</span> {0}cm<br><span class=\"fieldColour\">Email:</span> {1}<br><span class=\"fieldColour\">Phone:</span> {2}", account.Height, account.Email, account.Phone);
+        message += String.Format("<br><span class=\"fieldColour\">Relationship Status:</span> {0}<p>", account.RelStatus);
+        //==========================================================================================
+        //sports
+
+        messageSport += String.Format("<h4>Sports: {0}</h4>", account.Sports.Length);
+        messageSport += String.Format("<ul>");
+        for (int i = 0; i < account.Sports.Length; i++)
+        {
+            messageSport += String.Format("<li>{0}</li>", account.Sports[i]);
+        }
+        messageSport += String.Format("</ul>");
+
+        message += messageSport;
+        //==============================================================================================
+        //cultural
+
+        messageCult += String.Format("<h4>Cultural: {0}</h4>", account.Cultural.Length);
+        messageCult += String.Format("<ul>");
+        for (int i = 0; i < account.Cultural.Length; i++)
+        {
+            messageCult += String.Format("<li>{0}</li>", account.Cultural[i]);
+        }
+        messageCult += String.Format("</ul></fieldset></div>");
+
+        message += messageCult;
+
+        //=========================================================================================
+        
+
+    }
+    else
+    {
+        Response.Redirect("~/subpage3.cshtml");
+    }
+}
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Information</title>
+    <link rel="stylesheet" type="text/css" href="StyleSheet1.css">
+    <link rel="shortcut icon" type="image/x-icon" href="https://cdn3.iconfinder.com/data/icons/i-drawn-kid/500/balloon-512.png" />
+</head>
+<body>
+
+    <header class="subHead">
+        <h1>Box of Chocolates</h1>
+    </header>
+    @Html.Raw(message)
+    <div class="btnSubHolder">
+        <a href="~/index.cshtml" class="btnSub">Go Back</a>
+        <a href="~/subpage2.cshtml" class="btnSub">Save</a>
+    </div>
+</body>
+</html>

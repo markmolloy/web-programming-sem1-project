@@ -1,0 +1,243 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+html {
+
+	background: linear-gradient(#bfe9ff, #ff6e7f);
+	min-height: 100%;
+	font-family: 'Roboto', sans-serif;
+
+}
+body {
+	margin: 0px;
+	}
+	
+.mainDiv {/*each header & fieldset pairing and anything in between*/
+	
+	
+	background: white;
+	border-bottom: 1px solid #ccc;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	max-width: 600px;
+	margin: 50px auto;
+	flex-direction: column;
+  }
+
+h1 {
+	font-size: 60px;
+	font-family: 'Josefin Sans', sans-serif;
+	color: #bfe9ff;
+	text-shadow: black 0.1em 0.1em 0.2em;
+	}
+h3 {
+	font-size: 45px;
+	font-family: 'Josefin Sans', sans-serif;
+	color: #ff6e7f;
+	text-shadow: black 0.1em 0.1em 0.2em;
+
+	}
+h2 {
+	font-size:42px;
+	font-family: 'Josefin Sans', sans-serif;
+	color: grey;
+	margin: auto;
+	padding: 5px;
+	}
+h4 { 
+	font-size: 35px;
+	font-family: 'Josefin Sans', sans-serif;
+	color: #ff6e7f;
+}
+p, li{
+    font-size: 20px;
+    color: grey;
+}
+fieldset {
+	max-width: 600px;
+	margin: 50px auto;
+  	perspective: 1000px;
+	background: white;
+	padding: 40px 100px;
+	box-shadow: 0px 50px 30px -30px rgba(0,0,0,0.3);
+	margin-bottom: 0px;
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	border: 0;
+	}
+
+label {
+	color: grey;
+	}
+	
+.field-validation-error {
+    display: block;
+    color: red; 
+    padding-left: 5px;
+    float: right;
+}
+.radioSp {
+    width: 11em;
+    display: inline-block;
+    text-align: left;
+    padding-right: 1em;
+	margin: auto;
+	}
+input[type="checkbox"], input[type="radio"] {
+	transform: scale(1.5);
+	margin: 15px;
+	}
+input[type="date"] {
+    color: grey;
+}
+input[type="text"] {
+		
+	padding: 10px 20px;
+	border: 1px solid #999;
+	border-radius: 3px;
+	display: block;
+	width: 100%;
+	margin-bottom: 20px;
+	box-sizing: border-box;
+	outline: none;
+	}
+input[type="password"] {
+		
+	padding: 10px 20px;
+	border: 1px solid #999;
+	border-radius: 3px;
+	display: block;
+	width: 100%;
+	margin-bottom: 20px;
+	box-sizing: border-box;
+	outline: none;
+	}
+input[type="date"] {
+		
+	padding: 10px 20px;
+	border: 1px solid #999;
+	border-radius: 3px;
+	display: block;
+	width: 100%;
+	margin-bottom: 20px;
+	box-sizing: border-box;
+	outline: none;
+	
+}
+	
+#gender {
+	display: block;
+	margin: auto;
+	}
+#gender label {
+	padding: 8%;
+    }
+
+header {
+    height: 100vh;
+    background-image: url(http://www.vbctulsa.com/wordpress/wp-content/uploads/2015/03/pnkbalooon.jpg);
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.btn {
+    font-family: 'Josefin Sans', sans-serif;
+    color: grey;
+    font-size: 42px;
+    background: #ffffff;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+    box-shadow: 0px 50px 30px -30px rgba(0,0,0,0.3);
+    margin: 50px auto;
+    display: block;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #ccc;
+    background-image: linear-gradient(to bottom, #ccc, #999);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.reqdAst {
+    color: red;
+    font-size: 16px;
+}
+/*===========================================================================================*/
+/*=================SPECIFICALLY FOR THE EXTRA PAGESE FOR PART 3==============================*/
+.subHead {
+    width: 100%;
+    height: 20%;
+    background: white;
+    perspective: 500px;
+	box-shadow: 0px 50px 30px -30px rgba(0,0,0,0.3);
+}
+.subHead h1 {
+    color: #ff6e7f;
+    text-shadow: none;
+    margin: 5px;
+}
+
+.fieldColour {
+    color: #ff6e7f;
+}
+
+.btnSub {
+    font-family: 'Josefin Sans', sans-serif;
+    color: grey;
+    font-size: 42px;
+    background: #ffffff;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+    text-align: center;
+    box-shadow: 0px 50px 30px -30px rgba(0,0,0,0.3);
+    margin: 50px auto;
+    display: inline-block;
+    cursor: pointer;
+    width: 250px;
+}
+
+.btnSub:hover {
+    background: #ccc;
+    background-image: linear-gradient(to bottom, #ccc, #999);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btnSubHolder {
+    max-width: 600px;
+	margin: 4px auto;
+    display: flex;
+	justify-content: center;
+}
+
+.fullScreenDiv {
+    width: 100vw;
+    height: 75vh;
+    position: relative;
+}
+
+#leftError {
+    position: absolute;
+    left: 15%;
+    top: 5%;
+}
+
+#rightError {
+    position: absolute;
+    left: 60%;
+    top: 55%;
+}
+
+#casumo {
+    width: 100%;
+}
